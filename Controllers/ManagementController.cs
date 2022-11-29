@@ -22,14 +22,15 @@ namespace com.itransition.task3.Controllers
         [HttpGet]
         public async Task<IActionResult> Users(int page = 1)
         {
-            var user = await _userManager.FindByEmailAsync(User.Identity.Name);
             int pageSize = 10;
             var users = _userManager.Users.Where(u => u.Status != Status.Deleted).ToList();
+            var currentUser = User.Identity!.IsAuthenticated ? 
+                users.FirstOrDefault(u => u.Email.Equals(User.Identity!.Name)) : new User();
             var count = users.Count();
             var items = users.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             ManagementViewModel managementViewModel = new ManagementViewModel(items, pageViewModel);
-            return user.Status == Status.Active ? View(managementViewModel) : await Logout();
+            return currentUser!.Status == Status.Active ? View(managementViewModel) : await Logout();
         }
 
         [HttpPost]
