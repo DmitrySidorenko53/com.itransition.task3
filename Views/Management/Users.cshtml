@@ -49,13 +49,16 @@
             <table class="table table-hover table-dark bg-opacity-75 w-75 mx-auto text-center table-striped table-responsive-sm caption-top">
                 <caption>
                     <div class="d-flex flex-row">
-                        <a href="" class="btn btn-danger me-2">Block</a>
+                        @*<a href="" class="btn btn-danger me-2">Block</a>
                         <a href="" class="btn btn-dark me-2">
                             <i class="fi fi-rr-unlock"></i>
                         </a>
                         <a href="" class="btn btn-dark me-2">
                             <i class="fi fi-rr-cross-circle"></i>
-                        </a>
+                        </a>*@
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="fi fi-rr-unlock"></i>
+                        </button>
                     </div>
                 </caption>
                 <thead>
@@ -71,17 +74,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var user in Model.Users)
+                @for (int i = 0; i < Model.Users.Count(); i++)
                 {
                     <tr>
                         <th scope="row">
-                            <input type="checkbox" class="checkEmail" name="selectEmail" value="@user.Email"/>
+                            <input type="checkbox" class="checkEmail" name="users[@i].Email" value="@Model.Users[i].Email"/>
                         </th>
-                        <td data-label="Full Name">@user.FullName</td>
-                        <td data-label="Email">@user.Email</td>
-                        <td data-label="Register Date">@user.RegisterDate</td>
-                        <td data-label="Last Login Date">@user.LastLoginDate</td>
-                        <td data-label="Status">@user.Status.ToString()</td>
+                        <td data-label="Full Name">@Model.Users[i].FullName</td>
+                        <td data-label="Email">@Model.Users[i].Email</td>
+                        <td data-label="Register Date">@Model.Users[i].RegisterDate</td>
+                        <td data-label="Last Login Date">@Model.Users[i].LastLoginDate</td>
+                        <td data-label="Status">@Model.Users[i].Status.ToString()</td>
                     </tr>
                 }
                 </tbody>

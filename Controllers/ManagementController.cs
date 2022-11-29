@@ -26,7 +26,7 @@ namespace com.itransition.task3.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> ManageSelectedUser(FormCollection coll, ManageAction action)
+        public async Task<IActionResult> ManageSelectedUser(List<User> users, ManageAction action)
         {
             
             return RedirectToAction("Users");

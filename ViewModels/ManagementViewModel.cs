@@ -4,10 +4,10 @@ namespace com.itransition.task3.ViewModels;
 
 public class ManagementViewModel
 {
-    public IEnumerable<User> Users { get; }
+    public IList<User> Users { get; }
     public PageViewModel PageViewModel { get;}
     
-    public ManagementViewModel(IEnumerable<User> users, PageViewModel viewModel)
+    public ManagementViewModel(IList<User> users, PageViewModel viewModel)
     {
         Users = users;
         PageViewModel = viewModel;
