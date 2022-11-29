@@ -1,4 +1,5 @@
 ﻿@using com.itransition.task3.Models
+@using com.itransition.task3.ViewModels
 @model com.itransition.task3.ViewModels.ManagementViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
@@ -78,7 +79,7 @@
                 {
                     <tr>
                         <th scope="row">
-                            <input type="checkbox" class="checkEmail" name="users[@i].Email" value="@Model.Users[i].Email"/>
+                            <input type="checkbox" class="checkEmail" name="Users[@i].Email" value="@Model.Users[i].Email"/>
                         </th>
                         <td data-label="Full Name">@Model.Users[i].FullName</td>
                         <td data-label="Email">@Model.Users[i].Email</td>
