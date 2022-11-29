@@ -1,0 +1,38 @@
+@media (max-width: 650px) {
+    table {
+      overflow: auto;
+    }
+    thead {
+      display: none;
+    }
+
+    table, table tbody, table tr, table td {
+      display: block;
+      width: 100%;
+    }
+
+    table tr {
+      margin-bottom: 15px;
+    }
+
+    table tbody tr th {
+      display: flex;
+    }
+
+    table tbody tr td {
+      display: flex;
+      word-break: keep-all;
+      flex-wrap: wrap;
+      overflow: auto;
+    }
+
+    table td:before {
+      content: attr(data-label);
+      left: 0;
+      width: 100%;
+      word-break: keep-all;
+      margin-right: 10px;
+      text-align: left;
+      opacity: 0.8;
+    }
+  }
