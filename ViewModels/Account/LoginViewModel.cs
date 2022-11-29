@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace com.itransition.task3.ViewModels {
+namespace com.itransition.task3.ViewModels.Account {
     public class LoginViewModel {
         [Required]
         [Display(Name = "Email")]

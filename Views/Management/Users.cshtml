@@ -1,6 +1,5 @@
-﻿@using com.itransition.task3.Models
-@using com.itransition.task3.ViewModels
-@model com.itransition.task3.ViewModels.ManagementViewModel
+﻿@using com.itransition.task3.Controllers
+@model com.itransition.task3.ViewModels.Management.ManagementViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +35,7 @@
     <nav class="navbar bg-dark">
         <div class="container-lg">
             <a class="navbar-brand text-white" href="#">User Management</a>
-            <form class="form-check-inline" asp-action="Logout" asp-controller="Account" method="post">
+            <form class="form-check-inline" asp-action="Logout" asp-controller="Management" method="post">
                 <span class="me-3 align-self-center">Welcome, @User.Identity.Name!</span>
                 <button type="submit" class="btn bg-danger text-white">
                     <i class="fi fi-rr-exit"></i>
@@ -50,15 +49,14 @@
             <table class="table table-hover table-dark bg-opacity-75 w-75 mx-auto text-center table-striped table-responsive-sm caption-top">
                 <caption>
                     <div class="d-flex flex-row">
-                        @*<a href="" class="btn btn-danger me-2">Block</a>
-                        <a href="" class="btn btn-dark me-2">
+                        <button type="submit" class="btn btn-danger me-2" name="actionTitle" value="Block">
+                            Block
+                        </button>
+                        <button type="submit" class="btn btn-dark me-2" name="actionTitle" value="Unblock">
                             <i class="fi fi-rr-unlock"></i>
-                        </a>
-                        <a href="" class="btn btn-dark me-2">
+                        </button>
+                        <button type="submit" class="btn btn-dark me-2" name="actionTitle" value="Delete">
                             <i class="fi fi-rr-cross-circle"></i>
-                        </a>*@
-                        <button type="submit" class="btn btn-danger me-2">
-                            <i class="fi fi-rr-unlock"></i>
                         </button>
                     </div>
                 </caption>
@@ -78,9 +76,9 @@
                 @for (int i = 0; i < Model.Users.Count(); i++)
                 {
                     <tr>
-                        <th scope="row">
-                            <input type="checkbox" class="checkEmail" name="Users[@i].Email" value="@Model.Users[i].Email"/>
-                        </th>
+                        <td>
+                            <input type="checkbox" class="checkEmail" name="selectedEmails" value="@Model.Users[i].Email"/>
+                        </td>
                         <td data-label="Full Name">@Model.Users[i].FullName</td>
                         <td data-label="Email">@Model.Users[i].Email</td>
                         <td data-label="Register Date">@Model.Users[i].RegisterDate</td>

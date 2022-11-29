@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using com.itransition.task3.Models;
+using com.itransition.task3.Models.UserModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +11,11 @@ opts.UseSqlServer(connection));
 
 builder.Services.AddIdentity<User, IdentityRole>(
     opts => {
-        opts.Password.RequiredLength = 6;
+        opts.Password.RequiredLength = 1;
         opts.Password.RequireNonAlphanumeric = false;
-        opts.Password.RequireLowercase = true;
-        opts.Password.RequireUppercase = true;
-        opts.Password.RequireDigit = true;
+        opts.Password.RequireLowercase = false;
+        opts.Password.RequireUppercase = false;
+        opts.Password.RequireDigit = false;
         opts.User.RequireUniqueEmail = true;
     })
 .AddEntityFrameworkStores<ApplicationContext>();
@@ -45,12 +46,6 @@ app.UseEndpoints(endpoints => {
     endpoints.MapControllerRoute(
     name: "login",
     pattern: "{controller=Account}/{action=Login}");
-});
-
-app.UseEndpoints(endpoints => {
-    endpoints.MapControllerRoute(
-    name: "logout",
-    pattern: "{controller=Account}/{action=Logout}");
 });
 
 app.UseEndpoints(endpoints => {

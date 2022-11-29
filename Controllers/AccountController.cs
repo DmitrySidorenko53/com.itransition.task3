@@ -1,9 +1,11 @@
 ﻿using com.itransition.task3.Models;
+using com.itransition.task3.Models.UserModel;
 using com.itransition.task3.ViewModels;
+using com.itransition.task3.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication1.Controllers {
+namespace com.itransition.task3.Controllers {
     public class AccountController : Controller {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -28,15 +30,17 @@ namespace WebApplication1.Controllers {
             if(!ModelState.IsValid) {
                 return View(model);
             }
+            var user = createUserFromModel(model);
             var result = await _userManager.CreateAsync(
-                createUserFromModel(model), model.Password
+               user, model.Password
                 );
             if(!result.Succeeded) {
                 foreach(var error in result.Errors) {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return RedirectToAction("Login", "Account");
+            await _signInManager.SignInAsync(user, false);
+            return RedirectToAction("Users", "Management");
         }
 
         private User createUserFromModel(RegisterViewModel model) {
@@ -44,7 +48,9 @@ namespace WebApplication1.Controllers {
                 Email = model.Email,
                 UserName = model.Email,
                 FullName = model.FullName,
-                RegisterDate = DateTime.Now
+                RegisterDate = DateTime.Now,
+                LastLoginDate = DateTime.Now,
+                Status = Status.Active
             };
         }
 
@@ -52,47 +58,34 @@ namespace WebApplication1.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model) {
             if(!ModelState.IsValid) {
-                var errors = ModelState.Values.ToList();
                 return View(model);
             }
             var result = await _signInManager.PasswordSignInAsync(
                 model.Email, model.Password, false, false
                 );
             if(!result.Succeeded) {
-                ModelState.AddModelError(string.Empty, "Incorrect password or email");
+                ModelState.AddModelError(string.Empty, "Incorrect password or email!");
             }
             return await UpdateWhileLogin(model);
         }
-
-        [HttpPost]
+        
         private async Task<IActionResult> UpdateWhileLogin(LoginViewModel model) {
-            User user = await _userManager.FindByEmailAsync(model.Email);
-            if((!ModelState.IsValid) || !isUserAvaibleToLogin(user)) {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if((!ModelState.IsValid) || !IsUserAvailableToLogin(user)) {
                 return View(model);
             }
             user.LastLoginDate = DateTime.Now;
-            user.Status = Status.Active;
             var result = await _userManager.UpdateAsync(user);
             if(!result.Succeeded) {
-                foreach(var error in result.Errors) {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelError(string.Empty, "Error while updating user!");
             }
             return !string.IsNullOrEmpty(model.ReturnUrl)
                 && Url.IsLocalUrl(model.ReturnUrl) ?
                 Redirect(model.ReturnUrl) : RedirectToAction("Users", "Management");
         }
 
-        private bool isUserAvaibleToLogin(User user) {
-            return (user.Status == Status.Deleted) || (user.Status == Status.Blocked)
-                ? false : true;
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout() {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+        private bool IsUserAvailableToLogin(User user) {
+            return (user.Status != Status.Deleted) && (user.Status != Status.Blocked);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using com.itransition.task3.Models;
+using com.itransition.task3.Models.UserModel;
 
-namespace com.itransition.task3.ViewModels;
+namespace com.itransition.task3.ViewModels.Management;
 
 public class ManagementViewModel
 {
@@ -11,5 +12,11 @@ public class ManagementViewModel
     {
         Users = users;
         PageViewModel = viewModel;
+    }
+
+    public ManagementViewModel()
+    {
+        Users = new List<User>();
+        PageViewModel = new PageViewModel();
     }
 }

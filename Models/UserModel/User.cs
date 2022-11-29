@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace com.itransition.task3.Models {
+namespace com.itransition.task3.Models.UserModel {
     public class User : IdentityUser {
         public string FullName { get; set; }
         public DateTime RegisterDate { get; set; }

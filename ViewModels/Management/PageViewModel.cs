@@ -11,4 +11,8 @@ public class PageViewModel
         PageNumber = pageNumber;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
     }
+
+    public PageViewModel()
+    {
+    }
 }
